@@ -1,4 +1,5 @@
 import ReactMarkdown from "react-markdown";
+import { useState } from "react";
 
 const markdown = `
 # Crisis Classifier Documentation
@@ -194,11 +195,67 @@ The Crisis Classifier website integrates an intuitive user interface with a powe
 
 Feel free to modify thresholds, enhance preprocessing, or adjust training datasets to further optimize the classifier's performance.
 `;
+
 const MarkdownDescription = () => {
+  const [activeSection, setActiveSection] = useState<string | null>("overview");
+
+  const sections = [
+    { id: "overview", title: "Overview", anchor: "High-Level Overview" },
+    {
+      id: "structure",
+      title: "Project Structure",
+      anchor: "Project Structure",
+    },
+    {
+      id: "frontend",
+      title: "Frontend Components",
+      anchor: "1. Frontend Pages",
+    },
+    {
+      id: "services",
+      title: "Article Services",
+      anchor: "2. Article Processing Services",
+    },
+    {
+      id: "classifier",
+      title: "Classifier Implementation",
+      anchor: "3. One-Class Classifier Implementation",
+    },
+    { id: "conclusion", title: "Conclusion", anchor: "Conclusion" },
+  ];
+
   return (
-    <section>
-      <ReactMarkdown>{markdown}</ReactMarkdown>
-    </section>
+    <div className="flex flex-col md:flex-row gap-6 mt-8">
+      {/* Sidebar Navigation */}
+      <div className="md:w-1/4 bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md">
+        <h3 className="text-lg font-semibold mb-4 text-purple-900 dark:text-purple-300">
+          Documentation
+        </h3>
+        <nav className="space-y-1">
+          {sections.map((section) => (
+            <button
+              key={section.id}
+              onClick={() => setActiveSection(section.id)}
+              className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+                activeSection === section.id
+                  ? "bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-100"
+                  : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+              }`}
+            >
+              {section.title}
+            </button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Content Area */}
+      <div className="md:w-3/4 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        <div className="prose dark:prose-invert max-w-none prose-headings:text-purple-900 dark:prose-headings:text-purple-300 prose-a:text-blue-600 dark:prose-a:text-blue-400">
+          <ReactMarkdown>{markdown}</ReactMarkdown>
+        </div>
+      </div>
+    </div>
   );
 };
+
 export default MarkdownDescription;

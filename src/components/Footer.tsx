@@ -1,8 +1,15 @@
 import { AlertTriangle } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 const Footer: React.FC = () => {
+  const { theme } = useTheme();
+
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer
+      className={`${
+        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-900 text-white"
+      } py-12`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
@@ -31,12 +38,12 @@ const Footer: React.FC = () => {
             <h4 className="text-lg font-medium mb-4">Company</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="About" className="hover:text-white">
+                <a href="/About" className="hover:text-white">
                   About
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="/Contact" className="hover:text-white">
                   Contact
                 </a>
               </li>
@@ -70,7 +77,10 @@ const Footer: React.FC = () => {
             © 2025 Crisis Classifier. All rights reserved.
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-white">
+            <a
+              href="https://github.com/gholder513/Crisis_Classifier"
+              className="text-gray-400 hover:text-white"
+            >
               <span className="sr-only">GitHub</span>
               <svg
                 className="h-6 w-6"
