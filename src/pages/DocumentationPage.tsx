@@ -56,6 +56,7 @@ const DocumentationPage: React.FC = () => {
                 }
               />
               <h1
+                onClick={goToLandingPage}
                 className={`text-xl font-bold ${
                   theme === "dark" ? "text-purple-300" : "text-purple-900"
                 }`}
@@ -121,7 +122,7 @@ const DocumentationPage: React.FC = () => {
 
         <div className="flex justify-center mb-12">
           <a
-            href="https://github.com/gholder513/Crisis_Classifier"
+            href="https://github.com/gholder513/Crisis-Classifier"
             className={`flex items-center gap-2 px-4 py-2 rounded-md ${
               theme === "dark"
                 ? "bg-gray-800 text-gray-200 hover:bg-gray-700"

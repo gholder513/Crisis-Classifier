@@ -82,6 +82,7 @@ const ContactPage: React.FC = () => {
                 }
               />
               <h1
+                onClick={goToLandingPage}
                 className={`text-xl font-bold ${
                   theme === "dark" ? "text-purple-300" : "text-purple-900"
                 }`}

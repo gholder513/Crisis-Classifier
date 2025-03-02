@@ -1,12 +1,18 @@
 import { AlertTriangle } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
+    const navigate = useNavigate();
   const { theme } = useTheme();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const goToLandingPage = () => {
+    navigate("/");
   };
 
   return (
@@ -27,13 +33,15 @@ const Header: React.FC = () => {
                 theme === "dark" ? "text-purple-300" : "text-purple-800"
               }
             />
-            <h1
+            
+            <h1 onClick={goToLandingPage}
               className={`text-xl font-bold ${
                 theme === "dark" ? "text-purple-300" : "text-purple-900"
               }`}
             >
               Crisis Classifier
             </h1>
+            
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <a
