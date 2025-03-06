@@ -12,9 +12,9 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/process" element={<ProcessingPage />} />
-        <Route path="/About" element={<AboutPage />} />
-        <Route path="/Documentation" element={<DocumentationPage />} />
-        <Route path="/Contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/documentation" element={<DocumentationPage />} />
+        <Route path="/contact" element={<ContactPage />} />
       </Routes>
     </ThemeProvider>
   );

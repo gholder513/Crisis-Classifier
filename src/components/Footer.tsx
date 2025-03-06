@@ -78,7 +78,7 @@ const Footer: React.FC = () => {
           </p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a
-              href="https://github.com/gholder513/Crisis_Classifier"
+              href="https://github.com/gholder513/Crisis-Classifier"
               className="text-gray-400 hover:text-white"
             >
               <span className="sr-only">GitHub</span>
