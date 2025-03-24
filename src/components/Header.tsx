@@ -1,13 +1,11 @@
-import { AlertTriangle, LogOut } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { useTheme } from "../context/ThemeContext";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const { user, signOut } = useAuth();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -61,7 +59,7 @@ const Header: React.FC = () => {
                 const section = document.getElementById("features");
                 if (section) {
                   const offset =
-                    section.getBoundingClientRect().top + window.scrollY - 50;
+                    section.getBoundingClientRect().top + window.scrollY - 50; // add offset if needed
                   window.scrollTo({ top: offset, behavior: "smooth" });
                 }
               }}
@@ -80,7 +78,7 @@ const Header: React.FC = () => {
                 const section = document.getElementById("how-it-works");
                 if (section) {
                   const offset =
-                    section.getBoundingClientRect().top + window.scrollY - 50;
+                    section.getBoundingClientRect().top + window.scrollY - 50; // add offset if needed
                   window.scrollTo({ top: offset, behavior: "smooth" });
                 }
               }}
@@ -98,7 +96,7 @@ const Header: React.FC = () => {
                 theme === "dark"
                   ? "text-gray-300 hover:text-purple-300"
                   : "text-gray-700 hover:text-purple-800"
-              } cursor-pointer`}
+              }`}
             >
               Documentation
             </a>
@@ -108,27 +106,11 @@ const Header: React.FC = () => {
                 theme === "dark"
                   ? "text-gray-300 hover:text-purple-300"
                   : "text-gray-700 hover:text-purple-800"
-              } cursor-pointer`}
+              }`}
             >
               Contact
             </a>
-            <div className="flex items-center gap-4">
-              <span className={theme === "dark" ? "text-gray-300" : "text-gray-700"}>
-                {user?.name}
-              </span>
-              <button
-                onClick={signOut}
-                className={`flex items-center gap-2 px-4 py-2 rounded-md ${
-                  theme === "dark"
-                    ? "bg-red-700 hover:bg-red-800"
-                    : "bg-red-600 hover:bg-red-700"
-                } text-white`}
-              >
-                <LogOut size={18} />
-                Sign Out
-              </button>
-              <ThemeToggle />
-            </div>
+            <ThemeToggle />
           </nav>
         </div>
       </div>

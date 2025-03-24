@@ -66,7 +66,7 @@ const DocumentationPage: React.FC = () => {
             </div>
             <div className="flex items-center space-x-4">
               <a
-                href="/About"
+                href="/about"
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -76,7 +76,7 @@ const DocumentationPage: React.FC = () => {
                 About
               </a>
               <a
-                href="/Contact"
+                href="/contact"
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -86,7 +86,7 @@ const DocumentationPage: React.FC = () => {
                 Contact
               </a>
               <a
-                href="/Documentation"
+                href="/documentation"
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"

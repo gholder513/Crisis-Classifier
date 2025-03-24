@@ -17,6 +17,10 @@ const ContactPage: React.FC = () => {
     navigate("/");
   };
 
+  const goToAboutPage = () => {
+    navigate("/about");
+  };
+
   const teamMembers = [
     {
       name: "Gabriel Holder",
@@ -102,7 +106,7 @@ const ContactPage: React.FC = () => {
                 Documentation
               </a>
               <a
-                href="/About"
+                onClick={goToAboutPage}
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
