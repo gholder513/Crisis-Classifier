@@ -11,3 +11,8 @@ export interface ClassifierModel {
   predict: (article: Article) => { isCrisis: boolean; confidence: number };
   isReady: boolean;
 }
+
+export interface User {
+  email: string;
+  name: string;
+}

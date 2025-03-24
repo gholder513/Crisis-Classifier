@@ -1,17 +1,17 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { User } from '../types';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyACcnUKA1kaZRQf2PGSwzWsWx9SXsk-xag",
-  authDomain: "crisis-classifier.firebaseapp.com",
-  projectId: "crisis-classifier",
-  storageBucket: "crisis-classifier.firebasestorage.app",
-  messagingSenderId: "996995204555",
-  appId: "1:996995204555:web:0cb86c751513563e15e24e",
-  measurementId: "G-K4EF4RVFEN"
+export const handleGoogleLogin = async (credentialResponse: any): Promise<User> => {
+  // Decode the JWT token to get user information
+  const decoded = JSON.parse(atob(credentialResponse.credential.split('.')[1]));
+  
+  const user: User = {
+    email: decoded.email,
+    name: decoded.name
+  };
+
+  // Store auth data in localStorage
+  localStorage.setItem("isAuthenticated", "true");
+  localStorage.setItem("user", JSON.stringify(user));
+
+  return user;
 };
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-export { auth };

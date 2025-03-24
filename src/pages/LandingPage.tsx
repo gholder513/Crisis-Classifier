@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AlertTriangle,
   ArrowRight,
   CheckCircle,
   ExternalLink,
+  Upload,
 } from "lucide-react";
+import { useDropzone } from 'react-dropzone';
 import UrlInput from "../components/UrlInput";
 import Header from "../components/Header";
 import { processArticle } from "../services/articleService";
@@ -34,15 +36,10 @@ const LandingPage: React.FC = () => {
   const handleAddUrl = async (url: string) => {
     setIsLoading(true);
     try {
-      // Process the article to fetch its content
       const newArticle: Article = { url };
       const processedArticle = await processArticle(newArticle);
-
-      // Store the article in localStorage to pass to the processing page
       const articles = [processedArticle];
       localStorage.setItem("crisisArticles", JSON.stringify(articles));
-
-      // Navigate to the processing page
       navigate("/process");
     } catch (error) {
       console.error("Error adding article:", error);
@@ -54,7 +51,6 @@ const LandingPage: React.FC = () => {
   const handleUseSampleData = async () => {
     setIsLoading(true);
     try {
-      // Process sample articles to ensure they have content
       const processedCrisisArticles = await Promise.all(
         sampleCrisisArticles.map((article) => processArticle({ ...article }))
       );
@@ -63,17 +59,14 @@ const LandingPage: React.FC = () => {
         sampleNonCrisisArticles.map((article) => processArticle({ ...article }))
       );
 
-      // Combine all articles for training
       const articles = [
         ...processedCrisisArticles,
         ...processedNonCrisisArticles,
       ];
 
-      // Store the articles in localStorage
       localStorage.setItem("crisisArticles", JSON.stringify(articles));
       localStorage.setItem("useSampleData", "true");
 
-      // Navigate to the processing page
       navigate("/process");
     } catch (error) {
       console.error("Error processing sample data:", error);
@@ -81,6 +74,49 @@ const LandingPage: React.FC = () => {
       setIsLoading(false);
     }
   };
+
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    setIsLoading(true);
+    try {
+      const file = acceptedFiles[0];
+      const text = await file.text();
+      const urls = text.split('\n').filter(url => url.trim());
+      
+      const articles = await Promise.all(
+        urls.map(async (url) => {
+          try {
+            const article: Article = { url: url.trim() };
+            return await processArticle(article);
+          } catch (error) {
+            console.error(`Error processing URL: ${url}`, error);
+            return null;
+          }
+        })
+      );
+
+      const validArticles = articles.filter((article): article is Article => article !== null);
+      
+      if (validArticles.length > 0) {
+        localStorage.setItem("crisisArticles", JSON.stringify(validArticles));
+        navigate("/process");
+      } else {
+        showMessage("No valid URLs found in the file", "error");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Error processing file:", error);
+      showMessage("Failed to process file", "error");
+      setIsLoading(false);
+    }
+  }, [navigate]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: {
+      'text/plain': ['.txt']
+    },
+    multiple: false
+  });
 
   return (
     <div
@@ -90,10 +126,8 @@ const LandingPage: React.FC = () => {
           : "bg-gradient-to-br from-purple-100 to-yellow-100 text-gray-900"
       }`}
     >
-      {/* Header */}
       <Header />
 
-      {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h1
@@ -132,9 +166,55 @@ const LandingPage: React.FC = () => {
                   theme === "dark" ? "text-gray-200" : "text-gray-900"
                 }`}
               >
-                Add Article URL to Analyze
+                Add Article URL
               </h2>
               <UrlInput onAddUrl={handleAddUrl} />
+
+              <div className="mt-6">
+                <h2
+                  className={`text-lg font-medium mb-4 text-left ${
+                    theme === "dark" ? "text-gray-200" : "text-gray-900"
+                  }`}
+                >
+                  Or Drop a Text File
+                </h2>
+                <div
+                  {...getRootProps()}
+                  className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-colors ${
+                    isDragActive
+                      ? theme === "dark"
+                        ? "border-purple-400 bg-purple-900/20"
+                        : "border-purple-400 bg-purple-50"
+                      : theme === "dark"
+                      ? "border-gray-600 hover:border-purple-400"
+                      : "border-gray-300 hover:border-purple-400"
+                  }`}
+                >
+                  <input {...getInputProps()} />
+                  <Upload
+                    className={`mx-auto mb-2 ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }`}
+                    size={24}
+                  />
+                  <p
+                    className={
+                      theme === "dark" ? "text-gray-300" : "text-gray-600"
+                    }
+                  >
+                    {isDragActive
+                      ? "Drop the file here"
+                      : "Drag and drop a .txt file here, or click to select"}
+                  </p>
+                  <p
+                    className={`text-sm mt-1 ${
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  >
+                    Each line should contain a URL
+                  </p>
+                </div>
+              </div>
 
               {message && (
                 <div
@@ -197,7 +277,6 @@ const LandingPage: React.FC = () => {
           </div>
         )}
 
-        {/* Features Section */}
         <h2
           className={`text-3xl font-bold text-center ${
             theme === "dark" ? "text-purple-300" : "text-purple-900"
@@ -298,7 +377,6 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* How It Works Section */}
       <section
         id="how-it-works"
         className={
@@ -430,7 +508,6 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
         <h2
           className={`text-3xl font-bold ${
@@ -463,7 +540,6 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
