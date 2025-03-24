@@ -12,7 +12,7 @@ const AuthComponent: React.FC = () => {
   const onSuccess = async (credentialResponse: any) => {
     try {
       await handleGoogleLogin(credentialResponse);
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (error: any) {
       console.error("Error signing in with Google:", error.message);
     }
@@ -100,7 +100,7 @@ const AuthComponent: React.FC = () => {
           </p>
 
           <div className="space-y-4">
-            <button
+            <div
               className={`w-full py-3 px-4 flex items-center justify-center gap-2 rounded-md border ${
                 theme === "dark"
                   ? "border-gray-700 hover:bg-gray-800"
@@ -116,7 +116,7 @@ const AuthComponent: React.FC = () => {
                 size="large"
                 width="100%"
               />
-            </button>
+            </div>
           </div>
 
           <div className="mt-8 text-center">
