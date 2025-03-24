@@ -4,7 +4,7 @@ import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { theme } = useTheme();
 
   const scrollToTop = () => {
@@ -13,6 +13,14 @@ const Header: React.FC = () => {
 
   const goToLandingPage = () => {
     navigate("/");
+  };
+
+  const goToDocumentationPage = () => {
+    navigate("/documentation");
+  };
+
+  const goToContactPage = () => {
+    navigate("/contact");
   };
 
   return (
@@ -33,15 +41,15 @@ const Header: React.FC = () => {
                 theme === "dark" ? "text-purple-300" : "text-purple-800"
               }
             />
-            
-            <h1 onClick={goToLandingPage}
+
+            <h1
+              onClick={goToLandingPage}
               className={`text-xl font-bold ${
                 theme === "dark" ? "text-purple-300" : "text-purple-900"
               }`}
             >
               Crisis Classifier
             </h1>
-            
           </div>
           <nav className="hidden md:flex items-center space-x-8">
             <a
@@ -50,7 +58,8 @@ const Header: React.FC = () => {
                 e.preventDefault();
                 const section = document.getElementById("features");
                 if (section) {
-                  const offset = section.getBoundingClientRect().top + window.scrollY - 50; // add offset if needed
+                  const offset =
+                    section.getBoundingClientRect().top + window.scrollY - 50; // add offset if needed
                   window.scrollTo({ top: offset, behavior: "smooth" });
                 }
               }}
@@ -68,7 +77,8 @@ const Header: React.FC = () => {
                 e.preventDefault();
                 const section = document.getElementById("how-it-works");
                 if (section) {
-                  const offset = section.getBoundingClientRect().top + window.scrollY - 50; // add offset if needed
+                  const offset =
+                    section.getBoundingClientRect().top + window.scrollY - 50; // add offset if needed
                   window.scrollTo({ top: offset, behavior: "smooth" });
                 }
               }}
@@ -81,7 +91,7 @@ const Header: React.FC = () => {
               How It Works
             </a>
             <a
-              href="/Documentation"
+              onClick={goToDocumentationPage}
               className={`${
                 theme === "dark"
                   ? "text-gray-300 hover:text-purple-300"
@@ -91,7 +101,7 @@ const Header: React.FC = () => {
               Documentation
             </a>
             <a
-              href="/Contact"
+              onClick={goToContactPage}
               className={`${
                 theme === "dark"
                   ? "text-gray-300 hover:text-purple-300"
