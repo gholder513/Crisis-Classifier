@@ -75,17 +75,35 @@ const LandingPage: React.FC = () => {
     }
   };
 
+  const isValidUrl = (urlString: string): boolean => {
+    try {
+      new URL(urlString);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+  
+
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setIsLoading(true);
     try {
       const file = acceptedFiles[0];
       const text = await file.text();
-      const urls = text.split('\n').filter(url => url.trim());
-      
+      const urls = text.split('\n').map(url => url.trim()).filter(Boolean);
+  
+      const validUrls = urls.filter(isValidUrl);
+  
+      if (validUrls.length === 0) {
+        showMessage("No valid URLs found in the file", "error");
+        setIsLoading(false);
+        return;
+      }
+  
       const articles = await Promise.all(
-        urls.map(async (url) => {
+        validUrls.map(async (url) => {
           try {
-            const article: Article = { url: url.trim() };
+            const article: Article = { url };
             return await processArticle(article);
           } catch (error) {
             console.error(`Error processing URL: ${url}`, error);
@@ -93,14 +111,14 @@ const LandingPage: React.FC = () => {
           }
         })
       );
-
+  
       const validArticles = articles.filter((article): article is Article => article !== null);
-      
+  
       if (validArticles.length > 0) {
         localStorage.setItem("crisisArticles", JSON.stringify(validArticles));
         navigate("/process");
       } else {
-        showMessage("No valid URLs found in the file", "error");
+        showMessage("All valid URLs failed to process", "error");
         setIsLoading(false);
       }
     } catch (error) {
@@ -109,6 +127,7 @@ const LandingPage: React.FC = () => {
       setIsLoading(false);
     }
   }, [navigate]);
+  
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
