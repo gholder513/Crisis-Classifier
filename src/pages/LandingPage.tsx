@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   AlertTriangle,
@@ -11,26 +11,55 @@ import { useDropzone } from 'react-dropzone';
 import UrlInput from "../components/UrlInput";
 import Header from "../components/Header";
 import { processArticle } from "../services/articleService";
-import { Article } from "../types";
+import { Article, TrainingCollection } from "../types";
 import {
   sampleCrisisArticles,
   sampleNonCrisisArticles,
 } from "../data/sampleCrisisArticles";
 import Footer from "../components/Footer";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
+import CollectionsList from "../components/CollectionsList";
+import CreateCollectionModal from "../components/CreateCollectionModal";
+import { getCollections, createCollection as createNewCollection } from "../services/collectionService";
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [collections, setCollections] = useState<TrainingCollection[]>([]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [message, setMessage] = useState<{
     text: string;
     type: "info" | "success" | "error";
   } | null>(null);
   const { theme } = useTheme();
 
+  useEffect(() => {
+    if (user) {
+      const userCollections = getCollections(user.email);
+      setCollections(userCollections);
+    }
+  }, [user]);
+
   const showMessage = (text: string, type: "info" | "success" | "error") => {
     setMessage({ text, type });
     setTimeout(() => setMessage(null), 5000);
+  };
+
+  const handleCreateCollection = (name: string, description: string) => {
+    if (!user) return;
+
+    const newCollection = createNewCollection(name, description, user.email);
+    setCollections([...collections, newCollection]);
+    setIsCreateModalOpen(false);
+    showMessage("Collection created successfully", "success");
+  };
+
+  const handleSelectCollection = (collection: TrainingCollection) => {
+    localStorage.setItem("currentCollection", JSON.stringify(collection));
+    localStorage.setItem("crisisArticles", JSON.stringify(collection.articles));
+    navigate("/process");
   };
 
   const handleAddUrl = async (url: string) => {
@@ -83,7 +112,6 @@ const LandingPage: React.FC = () => {
       return false;
     }
   };
-  
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setIsLoading(true);
@@ -127,7 +155,6 @@ const LandingPage: React.FC = () => {
       setIsLoading(false);
     }
   }, [navigate]);
-  
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -173,6 +200,22 @@ const LandingPage: React.FC = () => {
             non-crisis events using advanced machine learning. Ditch manual
             review and automate your crisis monitoring.
           </p>
+
+          {/* Collections Section */}
+          <div className="mb-16">
+            <h2
+              className={`text-2xl font-bold mb-6 ${
+                theme === "dark" ? "text-purple-300" : "text-purple-900"
+              }`}
+            >
+              Your Training Collections
+            </h2>
+            <CollectionsList
+              collections={collections}
+              onCreateCollection={() => setIsCreateModalOpen(true)}
+              onSelectCollection={handleSelectCollection}
+            />
+          </div>
 
           <div className="max-w-xl mx-auto">
             <div
@@ -558,6 +601,12 @@ const LandingPage: React.FC = () => {
           </button>
         </div>
       </section>
+
+      <CreateCollectionModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        onSubmit={handleCreateCollection}
+      />
 
       <Footer />
     </div>

@@ -16,3 +16,12 @@ export interface User {
   email: string;
   name: string;
 }
+
+export interface TrainingCollection {
+  id: string;
+  name: string;
+  description: string;
+  createdAt: Date;
+  articles: Article[];
+  userId: string;
+}
