@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from sklearn.decomposition import TruncatedSVD
 import numpy as np
 
 def plot_fold_scores(results):

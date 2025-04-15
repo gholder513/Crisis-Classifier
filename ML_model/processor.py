@@ -7,21 +7,18 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 def extract_urls(zip_path, extract_dir="temp_urls"):
-    if os.path.exists(extract_dir):
-        for file in os.listdir(extract_dir):
-            os.remove(os.path.join(extract_dir, file))
-    else:
-        os.makedirs(extract_dir)
-
+    os.makedirs(extract_dir, exist_ok=True)
     urls = []
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
         zip_ref.extractall(extract_dir)
 
-    for file in os.listdir(extract_dir):
-        with open(os.path.join(extract_dir, file), 'r') as f:
-            urls.extend([line.strip() for line in f if line.strip()])
+    for item in os.listdir(extract_dir):
+        item_path = os.path.join(extract_dir, item)
+        # Only process if it's a file
+        if os.path.isfile(item_path):
+            with open(item_path, 'r') as f:
+                urls.extend([line.strip() for line in f if line.strip()])
     return urls
-
 
 
 def clean_text(text):
@@ -56,10 +53,10 @@ def scrape_url(url):
 
 
 def scrape_urls(urls):
-    scraped_data = []
-    for url in urls:
-        text = scrape_url(url)
-        scraped_data.append((url, text))
-    return scraped_data
+    return [scrape_url(url) for url in urls]
 
 
+def encode_texts(texts):
+    vectorizer = TfidfVectorizer(max_features=5000)
+    X = vectorizer.fit_transform(texts)
+    return X, vectorizer
