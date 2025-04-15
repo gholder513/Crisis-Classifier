@@ -7,11 +7,13 @@ import {
   Brain,
   ChevronDown,
   Search,
+  Clock,
+  Folder,
 } from "lucide-react";
 import UrlInput from "../components/UrlInput";
 import ArticleList from "../components/ArticleList";
 import TrainingOptions from "../components/TrainingOptions";
-import { Article, ClassifierModel } from "../types";
+import { Article, ClassifierModel, TrainingCollection } from "../types";
 import { processArticle } from "../services/articleService";
 import { createClassifier } from "../services/classifierService";
 import ThemeToggle from "../components/ThemeToggle";
@@ -31,9 +33,16 @@ const ProcessingPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"articles" | "training">(
     "articles"
   );
+  const [currentCollection, setCurrentCollection] = useState<TrainingCollection | null>(null);
   const { theme } = useTheme();
 
   useEffect(() => {
+    // Load current collection from localStorage
+    const savedCollection = localStorage.getItem("currentCollection");
+    if (savedCollection) {
+      setCurrentCollection(JSON.parse(savedCollection));
+    }
+
     // Load articles from localStorage
     const savedArticles = localStorage.getItem("crisisArticles");
     if (savedArticles) {
@@ -248,6 +257,49 @@ const ProcessingPage: React.FC = () => {
             theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
           } shadow rounded-lg overflow-hidden border border-gray-200`}
         >
+          {/* Collection Info */}
+          {currentCollection && (
+            <div
+              className={`p-4 ${
+                theme === "dark" ? "bg-gray-700" : "bg-gray-50"
+              } border-b ${
+                theme === "dark" ? "border-gray-600" : "border-gray-200"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Folder
+                  size={20}
+                  className={
+                    theme === "dark" ? "text-purple-300" : "text-purple-800"
+                  }
+                />
+                <span
+                  className={`font-medium ${
+                    theme === "dark" ? "text-gray-200" : "text-gray-900"
+                  }`}
+                >
+                  {currentCollection.name}
+                </span>
+                <div className="flex items-center gap-1 text-sm">
+                  <Clock
+                    size={14}
+                    className={
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }
+                  />
+                  <span
+                    className={
+                      theme === "dark" ? "text-gray-400" : "text-gray-500"
+                    }
+                  >
+                    Created on{" "}
+                    {new Date(currentCollection.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Top Section */}
           <div
             className={`p-6 border-b ${
