@@ -26,7 +26,7 @@ const ContactPage: React.FC = () => {
       name: "Gabriel Holder",
       email: "gholder513@vt.edu",
       github: "gholder513",
-      role: "Team Lead & Full Stack Developer",
+      role: "Full Stack Developer",
     },
     {
       name: "Anav Srinivas",
@@ -37,14 +37,20 @@ const ContactPage: React.FC = () => {
     {
       name: "Nekunj Sanghi",
       email: "nekunjs@vt.edu",
-      github: "nekunjs",
-      role: "Frontend Developer",
+      github: "Nekunj123",
+      role: "Full Stack Developer",
     },
     {
       name: "Menase Yirdaw",
       email: "menasey@vt.edu",
       github: "menasey",
       role: "Backend Developer",
+    },
+    {
+      name: "Prabhath Jonnavithula​",
+      email: "prabhathj@vt.edu",
+      github: "prabhath03",
+      role: "Team Manager",
     },
   ];
 

@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: { email: string; name: string } | null;
+  user: { email: string; name: string; isAdmin: boolean;} | null;
+  
   signOut: () => void;
 }
 
@@ -17,7 +18,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<{ email: string; name: string } | null>(null);
+  const [user, setUser] = useState<{ email: string; name: string; isAdmin: boolean } | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {

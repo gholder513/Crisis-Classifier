@@ -1,6 +1,7 @@
 import React from "react";
-import { BookOpen, Brain } from "lucide-react";
+import { BookOpen, Brain, Lock } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
 
 interface TrainingOptionsProps {
   onTrainWithSamples: () => void;
@@ -14,6 +15,26 @@ const TrainingOptions: React.FC<TrainingOptionsProps> = ({
   isModelReady,
 }) => {
   const { theme } = useTheme();
+  const { user } = useAuth();
+
+  if (!user?.isAdmin) {
+    return (
+      <div
+        className={`p-4 ${
+          theme === "dark"
+            ? "bg-gray-700 border-gray-600"
+            : "bg-gray-50 border-gray-200"
+        } border rounded-md`}
+      >
+        <div className="flex items-center gap-2 text-yellow-500">
+          <Lock size={20} />
+          <p className={theme === "dark" ? "text-gray-200" : "text-gray-700"}>
+            Only administrators can train new models. You can use existing trained models from the collections page.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -28,7 +49,7 @@ const TrainingOptions: React.FC<TrainingOptionsProps> = ({
           theme === "dark" ? "text-gray-200" : "text-gray-900"
         }`}
       >
-        Training Options
+        Training Options (Admin)
       </h2>
       <div className="flex flex-col sm:flex-row gap-3">
         <button

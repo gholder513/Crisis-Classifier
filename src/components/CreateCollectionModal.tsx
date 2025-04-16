@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 interface CreateCollectionModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModalProps> = ({
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const { theme } = useTheme();
+  const { user } = useAuth();
 
   if (!isOpen) return null;
 
@@ -39,7 +41,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModalProps> = ({
               theme === 'dark' ? 'text-gray-200' : 'text-gray-900'
             }`}
           >
-            Create New Collection
+            Create New Collection {user?.isAdmin && '(Admin)'}
           </h2>
           <button
             onClick={onClose}
@@ -98,6 +100,14 @@ const CreateCollectionModal: React.FC<CreateCollectionModalProps> = ({
               rows={3}
             />
           </div>
+
+          {user?.isAdmin && (
+            <div className="mb-4">
+              <p className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                This collection will be public and available to all users.
+              </p>
+            </div>
+          )}
 
           <div className="flex justify-end gap-3">
             <button

@@ -15,6 +15,7 @@ export interface ClassifierModel {
 export interface User {
   email: string;
   name: string;
+  isAdmin: boolean; // Added isAdmin flag
 }
 
 export interface TrainingCollection {
@@ -24,4 +25,6 @@ export interface TrainingCollection {
   createdAt: Date;
   articles: Article[];
   userId: string;
+  isPublic: boolean; // Added isPublic flag for admin-trained models
+  trainedByAdmin: boolean; // Added trainedByAdmin flag
 }
