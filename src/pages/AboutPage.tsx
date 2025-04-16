@@ -16,6 +16,12 @@ const AboutPage: React.FC = () => {
   const goToLandingPage = () => {
     navigate("/");
   };
+  const goToDocumentationPage = () => {
+    navigate("/documentation");
+  };
+  const goToContactPage = () => {
+    navigate("/contact");
+  };
 
   return (
     <div
@@ -63,8 +69,9 @@ const AboutPage: React.FC = () => {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <a
-                href="/Documentation"
+              <button
+                onClick={goToDocumentationPage}
+                
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -72,9 +79,9 @@ const AboutPage: React.FC = () => {
                 }`}
               >
                 Documentation
-              </a>
-              <a
-                href="/Contact"
+              </button>
+              <button
+                onClick={goToContactPage}
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -82,7 +89,7 @@ const AboutPage: React.FC = () => {
                 }`}
               >
                 Contact
-              </a>
+              </button>
               <ThemeToggle />
             </div>
           </div>

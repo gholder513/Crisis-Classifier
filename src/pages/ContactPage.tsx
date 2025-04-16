@@ -16,6 +16,9 @@ const ContactPage: React.FC = () => {
   const goToLandingPage = () => {
     navigate("/");
   };
+  const goToDocumentationPage = () => {
+    navigate("/documentation");
+  };
 
   const goToAboutPage = () => {
     navigate("/about");
@@ -101,8 +104,8 @@ const ContactPage: React.FC = () => {
               </h1>
             </div>
             <nav className="hidden md:flex space-x-8">
-              <a
-                href="/Documentation"
+              <button
+                onClick={goToDocumentationPage}
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -110,8 +113,8 @@ const ContactPage: React.FC = () => {
                 }`}
               >
                 Documentation
-              </a>
-              <a
+              </button>
+              <button
                 onClick={goToAboutPage}
                 className={`${
                   theme === "dark"
@@ -120,7 +123,7 @@ const ContactPage: React.FC = () => {
                 }`}
               >
                 About
-              </a>
+              </button>
               <ThemeToggle />
             </nav>
           </div>

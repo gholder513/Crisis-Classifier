@@ -1,8 +1,22 @@
 import { AlertTriangle } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const { theme } = useTheme();
+  const navigate = useNavigate();
+
+  const goToAboutPage = () => {
+    navigate("/about");
+  };
+
+  const goToDocumentationPage = () => {
+    navigate("/documentation");
+  };
+
+  const goToContactPage = () => {
+    navigate("/contact");
+  };
 
   return (
     <footer
@@ -27,7 +41,7 @@ const Footer: React.FC = () => {
             <h4 className="text-lg font-medium mb-4">Product</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="/Documentation" className="hover:text-white">
+                <a onClick={goToDocumentationPage} className="hover:text-white">
                   Documentation
                 </a>
               </li>
@@ -38,12 +52,12 @@ const Footer: React.FC = () => {
             <h4 className="text-lg font-medium mb-4">Company</h4>
             <ul className="space-y-2 text-gray-400">
               <li>
-                <a href="/About" className="hover:text-white">
+                <a onClick={goToAboutPage} className="hover:text-white">
                   About
                 </a>
               </li>
               <li>
-                <a href="/Contact" className="hover:text-white">
+                <a onClick={goToContactPage} className="hover:text-white">
                   Contact
                 </a>
               </li>

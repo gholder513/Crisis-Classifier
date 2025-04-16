@@ -18,6 +18,18 @@ const DocumentationPage: React.FC = () => {
     navigate("/");
   };
 
+  const goToContactPage = () => {
+    navigate("/contact");
+  };
+
+  const goToDocumentationPage = () => {
+    navigate("/documentation");
+  };
+
+  const goToAboutPage = () => {
+    navigate("/about");
+  };
+
   return (
     <div
       className={`min-h-screen ${
@@ -65,8 +77,8 @@ const DocumentationPage: React.FC = () => {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <a
-                href="/about"
+              <button
+                onClick={goToAboutPage}
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -74,9 +86,9 @@ const DocumentationPage: React.FC = () => {
                 }`}
               >
                 About
-              </a>
-              <a
-                href="/contact"
+              </button>
+              <button
+                onClick={goToContactPage}
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -84,9 +96,9 @@ const DocumentationPage: React.FC = () => {
                 }`}
               >
                 Contact
-              </a>
-              <a
-                href="/documentation"
+              </button>
+              <button
+                onClick={goToDocumentationPage}
                 className={`${
                   theme === "dark"
                     ? "text-gray-300 hover:text-purple-300"
@@ -94,7 +106,7 @@ const DocumentationPage: React.FC = () => {
                 }`}
               >
                 Documentation
-              </a>
+              </button>
               <ThemeToggle />
             </div>
           </div>
