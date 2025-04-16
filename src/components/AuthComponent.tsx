@@ -110,7 +110,6 @@ const AuthComponent: React.FC = () => {
               <GoogleLogin
                 onSuccess={onSuccess}
                 onError={onError}
-                useOneTap
                 type="standard"
                 theme={theme === "dark" ? "filled_black" : "outline"}
                 size="large"
