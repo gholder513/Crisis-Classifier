@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Folder, Plus, Clock } from 'lucide-react';
 import { TrainingCollection } from '../types';
 import { useTheme } from '../context/ThemeContext';
@@ -16,7 +15,6 @@ const CollectionsList: React.FC<CollectionsListProps> = ({
   onSelectCollection,
 }) => {
   const { theme } = useTheme();
-  const navigate = useNavigate();
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
